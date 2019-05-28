@@ -174,3 +174,117 @@ serviceWorker.unregister();
 // seperation of concerns
 // it's better to have functionality and styles per componenet
 // each component is seperate
+
+
+
+// /////////////
+// Remember we can only return one thing!!!
+// make sure when you return something, it must be only 1 or an array
+
+
+// when using default export..
+export default Card;
+// import syntax is..
+import Card from './Card';
+
+// otherwise you must { destructure } it, like...
+import { robots } from './robots';
+
+
+// not clean
+// const Card = (props) => {
+//   return (
+//     <div className='tc bg-light-gray dib br3 pa3 ma2 grow bw2 shadow-5'>
+//       <img alt='Robot' src={`https://robohash.org/${props.id}?size=200x200`} />
+//       <div>
+//         <h2>{props.name}</h2>
+//         <p>{props.email}</p>
+//       </div>
+//     </div>
+//   );
+// }
+// a little cleaner..
+// const Card = (props) => {
+//   const { name, email, id} = props;
+//   return (
+//     <div className='tc bg-light-gray dib br3 pa3 ma2 grow bw2 shadow-5'>
+//       <img alt='Robot' src={`https://robohash.org/${id}?size=200x200`} />
+//       <div>
+//         <h2>{name}</h2>
+//         <p>{email}</p>
+//       </div>
+//     </div>
+//   );
+// }
+
+// D R Y ///////////
+
+const Card = ({ name, email, id }) => {
+  return (
+    <div className='tc bg-light-gray dib br3 pa3 ma2 grow bw2 shadow-5'>
+      <img alt='Robot' src={`https://robohash.org/${id}?size=200x200`} />
+      <div>
+        <h2>{name}</h2>
+        <p>{email}</p>
+      </div>
+    </div>
+  );
+}
+
+
+
+// K E Y  P R O P ///////
+// Important when doing a loop //
+// https://reactjs.org/docs/lists-and-keys.html#keys
+
+// the way the virtual dom works is that it keeps track of what all the cards are..
+// so if one gets deleted, react wont know which one is which and will have to change the entire DOM
+// if it has a key prop, it knows which to remove
+// BECAUSE WE WANT TO MINIMISE THE AMOUNT OF WORK WE DO TO THE DOM!! :D
+// so when doing a loop, don't forget to give it a unique key!!!!
+
+
+
+// B E F O R E /////////
+// const CardList = ({ robots }) => {
+//   const cardArray = robots.map((user, i) => {
+//     return (
+//       <Card 
+//         key={i} 
+//         id={robots[i].id} 
+//         name={robots[i].name} 
+//         email={robots[i].email} 
+//       />
+//     );
+//   })
+//   return (
+//     <div>
+//       {cardArray}
+//     </div>
+//   );
+// }
+
+
+/////////////////////
+// AFTER (DRY)
+const CardList = ({ robots }) => {
+  return (
+    <div>
+      {
+        robots.map((user, i) => {
+          return (
+            <Card 
+              key={i} 
+              id={robots[i].id} 
+              name={robots[i].name} 
+              email={robots[i].email} 
+            />
+          );
+        })
+      }
+    </div>
+  );
+}
+
+// the above is a card list component, 
+// and all you need to do is pass it a prop of robots(or any other users)
